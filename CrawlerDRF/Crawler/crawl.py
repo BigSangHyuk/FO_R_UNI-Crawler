@@ -2,12 +2,19 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 
+def getHtml(url):
+    res = requests.get(url)
+    
+    html = res.text
+    
+    soup = BeautifulSoup(html, 'html.parser')
+    
+    return soup
+
 def CrawlNotice(code, number):
     list_url = f'https://inu.ac.kr/bbs/{code}/{number}/artclList.do'
-    res = requests.get(list_url)
 
-    html = res.text
-    soup = BeautifulSoup(html, 'html.parser')
+    soup = getHtml(list_url)
 
     notice_list = soup.select('body table tbody > tr:not(.notice)')
     today = datetime.now().strftime("%Y.%m.%d")
@@ -22,13 +29,8 @@ def CrawlNotice(code, number):
             
             writer = notice.select_one('.td-write').text.strip()
             
-            res = requests.get(notice_url)
-
-            html = res.text
-            
-            soup = BeautifulSoup(html, 'html.parser')
+            soup = getHtml(notice_url)
             
             detail = soup.select_one('.view-con').text
-            print(detail)
             
 CrawlNotice('isis', 376)
