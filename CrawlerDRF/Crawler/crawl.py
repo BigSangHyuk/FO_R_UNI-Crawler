@@ -12,6 +12,8 @@ def getHtml(url):
     return soup
 
 def CrawlNotice(code, number):
+    data = []
+    
     list_url = f'https://inu.ac.kr/bbs/{code}/{number}/artclList.do'
 
     soup = getHtml(list_url)
@@ -21,7 +23,8 @@ def CrawlNotice(code, number):
     today = '2024.01.22'
     
     for notice in notice_list:
-        if today == notice.select_one('.td-date').text.strip():
+        posted_at = notice.select_one('.td-date').text.strip()
+        if today == posted_at:
             
             notice_url = 'https://inu.ac.kr' + notice.select_one('.td-subject > a').get('href')
 
@@ -31,6 +34,8 @@ def CrawlNotice(code, number):
             
             soup = getHtml(notice_url)
             
-            detail = soup.select_one('.view-con').text
+            content = soup.select_one('.view-con').text
             
-CrawlNotice('isis', 376)
+            data.append({'category_id':number, 'title':title, 'content':content, 'img_url':'', 'posted_at':posted_at, 'deadline':''})
+            
+    return data
