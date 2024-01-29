@@ -20,7 +20,7 @@ def CrawlNotice(code, number):
 
     notice_list = soup.select('body table tbody > tr:not(.notice)')
     today = datetime.now().strftime("%Y.%m.%d")
-    today = '2024.01.22'
+    today = '2023.12.29'
     
     for notice in notice_list:
         posted_at = notice.select_one('.td-date').text.strip()
@@ -30,12 +30,18 @@ def CrawlNotice(code, number):
 
             title = notice.select_one('.td-subject strong').text
             
-            writer = notice.select_one('.td-write').text.strip()
+            # writer = notice.select_one('.td-write').text.strip()
             
             soup = getHtml(notice_url)
             
-            content = soup.select_one('.view-con').text
+            content = soup.select_one('.view-con')
             
-            data.append({'category_id':number, 'title':title, 'content':content, 'img_url':'', 'posted_at':posted_at, 'deadline':''})
+            if img := content.select('p img'):
+                img_url = [i.get('src') for i in img]
+            
+            else:
+                img_url = ''    
+            
+            data.append({'category_id':number, 'title':title, 'content':content.text, 'img_url':img_url, 'posted_at':posted_at, 'deadline':''})
             
     return data
