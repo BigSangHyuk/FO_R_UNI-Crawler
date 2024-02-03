@@ -25,7 +25,7 @@ async def CrawlDepartment(dm):
 
     notice_list = soup.select("body table tbody > tr:not(.notice)")
     today = datetime.now().strftime("%Y.%m.%d")
-    # today = "2024.01.29"
+    today = "2024.01.29"
 
     for notice in notice_list:
         posted_at = (
@@ -46,9 +46,11 @@ async def CrawlDepartment(dm):
             if img := content.select("p img"):
                 img_url = [i.get("src") for i in img]
             else:
-                img_url = ""
+                img_url = []
 
-            deadline = await get_ai_response(re.sub(r'\n', '', BeautifulSoup(html, "html.parser").select_one("._fnctWrap").text))
+            ai_text = re.sub(r'\n', '', BeautifulSoup(html, "html.parser").select_one("._fnctWrap").text)
+            
+            deadline = await get_ai_response(ai_text)
 
             data.append(
                 {
