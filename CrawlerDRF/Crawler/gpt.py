@@ -8,7 +8,7 @@ load_dotenv()
 api_key = os.getenv('OPENAI_API_KEY')
 client = openai.OpenAI(api_key=api_key)
 
-async def get_ai_response(content):
+async def get_ai_response(content, img_url):
     
     system_prompt = "너는 대학교 공지사항 내용을 입력받으면 글 안에서 마감기한 혹은 행사 날짜를 찾아서 알려주는 AI야. 만약 입력받은 공지사항 글에서 마감기한이 있으면 마감기한 날짜를, 당일 하루짜리 행사이면 당일 행사 날짜를 XXXX.XX.XX 형식으로 답변해줘. 답변에 불필요한 말이나 한글 없이 XXXX.XX.XX 형식으로만 대답해줘."
     prompt = f"SYSTEM: {system_prompt}\nUSER: {content}\nAI: "

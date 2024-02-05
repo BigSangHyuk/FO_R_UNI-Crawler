@@ -50,7 +50,7 @@ async def CrawlDepartment(dm):
 
             ai_text = re.sub(r'\n', '', BeautifulSoup(html, "html.parser").select_one("._fnctWrap").text)
             
-            deadline = await get_ai_response(ai_text)
+            deadline = await get_ai_response(ai_text, img_url)
 
             data.append(
                 {
