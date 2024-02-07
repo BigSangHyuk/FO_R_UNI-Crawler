@@ -25,7 +25,7 @@ async def CrawlDepartment(dm):
 
     notice_list = soup.select("body table tbody > tr:not(.notice)")
     today = datetime.now().strftime("%Y.%m.%d")
-    today = "2024.01.29"
+    # today = "2024.01.29"
 
     for notice in notice_list:
         posted_at = (
@@ -34,36 +34,36 @@ async def CrawlDepartment(dm):
             else ""
         )
         if today == posted_at:
-            notice_url = "https://inu.ac.kr" + notice.select_one(".td-subject > a").get(
-                "href"
-            )
+            notice_url = "https://inu.ac.kr" + notice.select_one(".td-subject > a").get("href")
             title = notice.select_one(".td-subject strong").text
 
             html = await fetch_html(notice_url)
             content = BeautifulSoup(html, "html.parser").select_one(".view-con")
-            content_text = re.sub(r"(\n)+", "\n", re.sub(r"\t|\xa0", "", content.text))
-
-            if img := content.select("p img"):
-                img_url = [i.get("src") for i in img]
-            else:
-                img_url = []
-
-            ai_text = re.sub(r'\n', '', BeautifulSoup(html, "html.parser").select_one("._fnctWrap").text)
             
-            deadline = await get_ai_response(ai_text, img_url)
+            if content:
+                content_text = re.sub(r"(\n)+", "\n", re.sub(r"\t|\xa0", "", content.text))
 
-            data.append(
-                {
-                    "category_id": number,
-                    "title": title,
-                    "content": content_text,
-                    "img_url": img_url,
-                    "posted_at": posted_at,
-                    "deadline": deadline,
-                    "notice_url": notice_url,
-                }
-            )
+                if img := content.select("p img"):
+                    img_url = [i.get("src") for i in img]
+                else:
+                    img_url = []
 
+                ai_text = re.sub(r'\n', '', BeautifulSoup(html, "html.parser").select_one("._fnctWrap").text)
+                
+                deadline = await get_ai_response(ai_text, img_url)
+
+                data.append(
+                    {
+                        "category_id": number,
+                        "title": title,
+                        "content": content_text,
+                        "img_url": img_url,
+                        "posted_at": posted_at,
+                        "deadline": deadline,
+                        "notice_url": notice_url,
+                    }
+                )
+                
     return data
 
 
