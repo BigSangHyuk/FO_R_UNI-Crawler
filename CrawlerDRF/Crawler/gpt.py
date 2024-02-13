@@ -10,11 +10,10 @@ client = openai.OpenAI(api_key=api_key)
 
 async def get_ai_response(content, img_url):
     
-    system_prompt = "너는 대학교 공지사항 내용을 입력받으면 글 안에서 마감기한 혹은 행사 날짜를 찾아서 알려주는 AI야. 만약 입력받은 공지사항 글에서 마감기한이 있으면 마감기한 날짜를, 당일 하루짜리 행사이면 당일 행사 날짜를 XXXX.XX.XX 형식으로 답변해줘. 답변에 불필요한 말이나 한글 없이 XXXX.XX.XX 형식으로만 대답해줘."
-    prompt = f"SYSTEM: {system_prompt}\nUSER: {content}\nAI: "
-    
-    model_engine = "gpt-3.5-turbo-instruct"
-    async def make_request():
+    async def make_request_3():
+        model_engine = "gpt-3.5-turbo-instruct"
+        system_prompt = "너는 대학교 공지사항 내용을 입력받으면 글 안에서 마감기한 혹은 행사 날짜를 찾아서 알려주는 AI야. 만약 입력받은 공지사항 글에서 마감기한이 있으면 마감기한 날짜를, 당일 하루짜리 행사이면 당일 행사 날짜를 XXXX.XX.XX 형식으로 답변해줘. 답변에 불필요한 말이나 한글 없이 XXXX.XX.XX 형식으로만 대답해줘."
+        prompt = f"SYSTEM: {system_prompt}\nUSER: {content}\nAI: "
         completions = await asyncio.to_thread(
             client.completions.create,
             model=model_engine,
@@ -26,7 +25,7 @@ async def get_ai_response(content, img_url):
         )
         return completions.choices[0].text.strip()
 
-    response = await make_request()
+    response = await make_request_3()
     
     date = re.search(r'\d{4}\.\d{2}\.\d{2}', response)
     
