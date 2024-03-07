@@ -8,9 +8,13 @@ import asyncio
 
 
 async def fetch_html(url):
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url) as response:
-            return await response.text()
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url) as response:
+                return await response.text()
+    except (aiohttp.ClientError, asyncio.TimeoutError) as e:
+        print(f"Error fetching HTML from {url}: {e}")
+        return None
 
 
 async def CrawlDepartment(dm):
@@ -25,7 +29,7 @@ async def CrawlDepartment(dm):
 
     notice_list = soup.select("body table tbody > tr:not(.notice)")
     today = datetime.now().strftime("%Y.%m.%d")
-    today = "2024.02.08"
+    # today = "2024.02.08"
 
     for notice in notice_list:
         posted_at = (
