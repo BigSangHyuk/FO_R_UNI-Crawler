@@ -55,6 +55,11 @@ async def CrawlDepartment(dm):
                 ai_text = re.sub(r'\n', '', BeautifulSoup(html, "html.parser").select_one("._fnctWrap").text)
                 
                 deadline = await get_ai_response(ai_text, img_url)
+                
+                if deadline == "":
+                    is_classified = False
+                else:
+                    is_classified = True
 
                 data.append(
                     {
@@ -64,6 +69,7 @@ async def CrawlDepartment(dm):
                         "img_url": img_url,
                         "posted_at": posted_at,
                         "deadline": deadline,
+                        "isclassified": is_classified,
                         "notice_url": notice_url,
                     }
                 )
