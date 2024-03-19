@@ -8,4 +8,5 @@
 
 3/14
 
-aws ec2 fouruni20242@gmail.com
+aws ec2 fouruni2024@gmail.com
+크롤링한 Data값으로 POST요청 일정 시간마다 보내기
