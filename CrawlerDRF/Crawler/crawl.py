@@ -29,7 +29,7 @@ async def CrawlDepartment(dm):
 
     notice_list = soup.select("body table tbody > tr:not(.notice)")
     today = datetime.now().strftime("%Y.%m.%d")
-    # today = "2024.02.08"
+    today = "2024.04.30"
 
     for notice in notice_list:
         posted_at = (
