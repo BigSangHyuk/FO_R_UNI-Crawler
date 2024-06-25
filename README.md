@@ -14,6 +14,6 @@ GET요청 들어왔을때 data return으로 변경 (완)
 
 4/8
 
-nginx + gunicorn 연결 (진행중)
+nginx + gunicorn 연결
 
 프롬프트 엔지니어링 수정
