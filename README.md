@@ -8,8 +8,6 @@
 
 3/14
 
-aws ec2
-
 GET요청 들어왔을때 data return으로 변경 (완)
 
 4/8
